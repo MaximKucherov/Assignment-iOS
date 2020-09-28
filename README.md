@@ -1,109 +1,114 @@
-# ZADANIE #
+# ASSIGNMENT #
 
-Vytvor aplikáciu na predpoveď počasia, ktorá bude zobrazovať aktuálne počasie na zvolenom mieste. Aplikácia bude využívať voľne dostupné API. Z API získaj potrebné údaje a následne ich zobraz. Vzhľad a funkčnosť aplikácie je popísaná v nasledujúcej špecifikácii. 
+Create a weather forecast application that displays the current weather at the selected location. The application will use free to use and publicly available API. Get the necessary data from the API and then present it. The following specification is describing the appearance and functionality of the application.
 
-## Technické požiadavky ##
+## Technical requirements ##
 
-### Programovanie ###
+### Programming ###
 
-* dodržiavanie základných princípov OOP
-* programovací jazyk Swift
-* voľbu architektúry nechávame na teba
-* kód musí byť skompilovateľný a bez warningov
-* konzistentný a čitateľný kód
-* odporúčame zvoliť si [style guide](https://www.google.com/search?q=swift+style+guide)
+* Follow the basic principles of OOP
+* Consistent and readable code
+* Swift programming language
+* The choice of architecture is on you
+* Code must be compilable and without warnings
+* We recommend you to choose [swift style guide](https://www.google.com/search?q=swift+style+guide)
 
-### Systém a zariadenia ###
+### System and devices ###
 
 * iOS 14 SDK
-* podpora iOS 13 a vyššie
-* všetky dostupné zariadenia iOS a iPadOS
-* funkčné na simulátoroch aj reálnych zariadeniach
+* Support for iOS 13 and higher
+* All available iOS and iPadOS devices
+* Functional on simulators and real devices
 
-### Knižnice ###
+### Frameworks ###
 
-* parsovanie API pomocou Codable
-* používateľské rozhranie pomocou UIKit
-* lokalizačné služby a (reverse)geocoding pomocou CoreLocation
-* nepoužívaj žiadne externé knižnice mimo iOS SDK
+* API parsing using Codable
+* User interface using UIKit
+* Location services and (reverse)geocoding using CoreLocation
+* Do not use any external libraries except those provided by the iOS SDK
 
 ### UI ###
 
-* systémový font
-* ikony použi natívne zo SF Symbols
-* responzívne zobrazenie podporujúce všetky zariadenia
-* lokalizácia aplikácie v slovenskom a anglickom jazyku
+* System font
+* Use native icons from SF Symbols
+* Responsive layout supporting all devices
+* Localization of the application in Slovak and English
 
 ### API ###
 
-* informácie o počasí získavaj z [OpenWeather](https://openweathermap.org/api)
-* API kľúč si môžeš vygenerovať po registrácii
+* Get weather information from [OpenWeather](https://openweathermap.org/api)
+* You can generate an API key after registration
 
-## Odovzdávanie ##
+## Handover ##
 
-* vytvor private fork tohto repozitára
-* prideľ admin práva na dominik.petho@goodrequest.com
-* vytvor develop branchu
-* zmeny môžeš commitovať a pushovať aj priebežne
-* finálne zadanie odovzdaj ako pull request na master branchu
-* ako reviewera nastav dominik.petho@goodrequest.com
+* Create a private fork of this repository
+* Assign admin rights to dominik.petho@goodrequest.com
+* Create develop branch
+* You can commit and push changes continuously
+* Submit the final assignment as a pull request on the master branch
+* Set dominik.petho@goodrequest.com as a reviewer
 
-## Špecifikácia ##
+## Specification ##
 
-Základná navigácia aplikácie je riešená cez TabBar, ktorý rozdeľuje aplikáciu na 3 sekcie - Mapa, Vyhľadávanie a Obľúbené. Z každej sekcie sa dá otvoriť detail s počasím zvoleného mesta.
+The navigation of the application is divided via TabBar into 3 sections - Map, Search and Favorites. From each section, you can open a detail with the weather of the selected location.
 
-### Mapa ###
+### Map ###
 
-![Mapa](img/screen_map_1.png)
+![Map](img/screen_map_1.png)
 
-Mapa zobrazuje aktuálnu polohu zariadenia, ráta sa s ošetrením možných chybových stavov ako vypnuté lokalizačné služby alebo chýbajúce povolenie používateľa.
+The map shows the current location of the device.
 
-V spodnej časti je možnosť prepnúť zobrazenie mapy a vrátenie (nazoomovanie) na aktuálnu polohu.
+At the bottom, it is possible to switch the map type and return (zoom) to the current position.
 
-Pri dlhom podržaní sa na mapu pridá pin so zvolenou lokalitou. Pin bude obsahovať názov mesta, v ktorom sa nachádza, získaný pomocou geocodingu. Po kliknutí na pin sa zobrazí deail s počasím pre dané mesto.
+Using long-press it is possible to place a marker (pin) on the map with the selected location. The marker will contain the name of the location, obtained by reverse geocoding. 
 
-### Vyhľadávanie ###
+Weather forecast detail for the given location will be displayed after selecting the pin.
 
-![Mapa](img/screen_search_1.png) ![Mapa](img/screen_search_2.png)
+### Search ###
 
-Obrazovka umožňuje fulltextové vyhľadávanie lokality.
+![Search](img/screen_search_1.png) ![Search](img/screen_search_2.png)
 
-Po kliknutí na bunku sa zobrazí detail s počasím pre danú lokalitu.
+Search screen allows a full-text location search using geocoding services.
 
-### Obľúbené ###
+Weather forecast detail for the given location will be displayed after selecting the location.
 
-![Mapa](img/screen_favorites_1.png)
+### Favorites ###
 
-Obrazovka zobrazuje zoznam lokalít, ktoré boli označené ako obĺúbené.
+![Favorites](img/screen_favorites_1.png)
 
-Zoznam obľúbených ostane uložený aj pri reštarte aplikácie.
+Favorites screen displays a list of locations that have been marked as favorite.
 
-Po kliknutí na bunku sa zobrazí detail s počasím pre danú lokalitu.
+The favorites list will be stored even when the application is closed or restarted.
 
-TabBar bude zobrazovať badge s počtom uložených lokalít.
+TabBar will show a badge with the number of favorite locations.
+
+Weather forecast detail for the given location will be displayed after selecting the location.
 
 ### Detail ###
 
-![Mapa](img/screen_detail_1.png) ![Mapa](img/screen_detail_2.png)
+![Detail](img/screen_detail_1.png) ![Detail](img/screen_detail_2.png)
 
-Obrazovka bude zobrazovať aktuálne počasie na zvolenej lokalite.
+The detail screen will display the current weather at the selected location.
 
-Obrazovka ďalej obsahuje predpoveď počasia na nasledujúce dni.
+The screen also contains the weather forecast for the following days.
 
-Lokalitu je možné pridať/odstrániť z obľúbených.
+The location can be added/removed from favorites.
 
-Ak sa detail nezmestí na obrazovku zariadenia, tak sa pri scrollovaní bude dynamicky zobrazovať horná navigácia. Samotný prechod zobrazovania/schovávania môžeš obohatiť o zaujímajú animáciu.
+If the detail does not fit on the device screen, the top navigation will be displayed dynamically after scrolling down. 
 
-## Kritéria hodnotenia ##
+BONUS: You can add transition animation while showing/hiding the top navigation.
 
-Pri hodnotení sa budeme zameriavať na:
+## Evaluation criteria ##
 
-* kompletnosť riešenia v stanovenom čase,
-* štruktúru projektu, logické rozdelenie do priečinkov,
-* čitateľnosť kódu, dodržiavanie zvoleného code style,
-* ošetrenie možných memory leakov a optional hodnôt,
-* implementáciu zvolenej architektúry,
-* univerzálnosť sieťovej časti, vyskladávanie requestov,
-* parsovanie a mapovanie dát,
-* použitie natívnych UI prvkov a constraintov,
-* korektné zobrazenie na rôznych zariadeniach.
+The evaluation will focus on:
+
+* completeness of the solution in the specified time,
+* project structure, the logical division into folders,
+* code readability, following the chosen code style guide,
+* handling of possible memory leaks and optional values,
+* error and permission handling,
+* implementation of selected architecture,
+* versatility and scalability of the network part,
+* data parsing and mapping,
+* use of native UI elements and constraints,
+* correct layout on various devices.
