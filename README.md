@@ -98,6 +98,25 @@ If the detail does not fit on the device screen, the top navigation will be disp
 
 BONUS: You can add transition animation while showing/hiding the top navigation.
 
+## Styleguide ##
+
+### Fonts ###
+
+* System 14.0
+* System 16.0
+* System Semibold 16.0
+* System 32.0
+* System Black 64.0
+
+### Colors ###
+
+* White		#FFFFFF
+* Gray		#8E8E93
+* Black		#000000
+* Blue		#0096FF
+* Purple	#9437FF
+* Red		#FF3B30
+
 ## Evaluation criteria ##
 
 The evaluation will focus on:
