@@ -1,6 +1,6 @@
 # ZADANIE #
 
-Vytvor aplikáciu na predpoveď počasia, ktorá bude zobrazovať aktuálne počasie na zvolenom mieste. Aplikácia bude využívať voľne dostupné API. Z API získaj potrebné údaje a následne ich zobraz. Vzhľad a funčnosť applikácie je popísaná v nasledujúcej špecifikácii. 
+Vytvor aplikáciu na predpoveď počasia, ktorá bude zobrazovať aktuálne počasie na zvolenom mieste. Aplikácia bude využívať voľne dostupné API. Z API získaj potrebné údaje a následne ich zobraz. Vzhľad a funkčnosť aplikácie je popísaná v nasledujúcej špecifikácii. 
 
 ## Technické požiadavky ##
 
@@ -10,7 +10,7 @@ Vytvor aplikáciu na predpoveď počasia, ktorá bude zobrazovať aktuálne poč
 * programovací jazyk Swift
 * voľbu architektúry nechávame na teba
 * kód musí byť skompilovateľný a bez warningov
-* konzistentý a čitateľný kód
+* konzistentný a čitateľný kód
 * odporúčame zvoliť si [style guide](https://www.google.com/search?q=swift+style+guide)
 
 ### Systém a zariadenia ###
@@ -90,7 +90,7 @@ Obrazovka bude zobrazovať aktuálne počasie na zvolenej lokalite.
 
 Obrazovka ďalej obsahuje predpoveď počasia na nasledujúce dni.
 
-Lokalitu je možné pridať/odstráníť z obľúbených.
+Lokalitu je možné pridať/odstrániť z obľúbených.
 
 Ak sa detail nezmestí na obrazovku zariadenia, tak sa pri scrollovaní bude dynamicky zobrazovať horná navigácia. Samotný prechod zobrazovania/schovávania môžeš obohatiť o zaujímajú animáciu.
 
