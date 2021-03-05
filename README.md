@@ -46,7 +46,7 @@ Create a weather forecast application that displays the current weather at the s
 * Create develop branch
 * You can commit and push changes continuously
 * Submit the final assignment as a pull request on the master branch
-* Set dominik.petho@goodrequest.com as a reviewer
+* Set dominik.petho@goodrequest.com & maros.novak@goodrequest.com as reviewers
 
 ## Specification ##
 
