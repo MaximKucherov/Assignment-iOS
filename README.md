@@ -15,15 +15,15 @@ Create a weather forecast application that displays the current weather at the s
 
 ### System and devices ###
 
-* iOS 14 SDK
-* Support for iOS 13 and higher
+* iOS 15 SDK
+* Support for iOS 15 and higher
 * All available iOS and iPadOS devices
 * Functional on simulators and real devices
 
 ### Frameworks ###
 
 * API parsing using Codable
-* User interface using UIKit
+* User interface using UIKit/SwiftUI
 * Location services and (reverse)geocoding using CoreLocation
 * Do not use any external libraries except those provided by the iOS SDK
 
@@ -42,11 +42,11 @@ Create a weather forecast application that displays the current weather at the s
 ## Handover ##
 
 * Create a private fork of this repository
-* Assign admin rights to maros.novak@goodrequest.com
+* Assign admin rights to andrej.jasso@goodrequest.com
 * Create develop branch
 * You can commit and push changes continuously
 * Submit the final assignment as a pull request on the master branch
-* Set maros.novak@goodrequest.com as reviewers
+* Set andrej.jasso@goodrequest as reviewers
 
 ## Specification ##
 
