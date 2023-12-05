@@ -28,7 +28,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
     
     private let searchController = UISearchController(searchResultsController: nil)
     private var searchResults: [WeatherInfo] = [] // Сюда будут сохранены результаты поиска
-    private let weatherService = WeatherService(apiKey: "ec4961b4f3285a88d43c0ed75cff4999")
+    private let weatherService = WeatherService(apiKey: "Put_Your_API_KEY")
     
     let tableView: UITableView = {
         let tableView = UITableView()
