@@ -114,6 +114,52 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D043F0912B1FA5D700D73DD6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D043F0892B1D181F00D73DD6 /* WeatherService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D043F0922B1FA60E00D73DD6 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D05ED56E2B0FC7F900ED3A52 /* MapViewController.swift */,
+				D06C11902B0FE1A300CDDA06 /* SearchViewController.swift */,
+				D043F08B2B1D2C0900D73DD6 /* WeatherDetailViewController.swift */,
+				D06C11922B0FE1BF00CDDA06 /* FavoritesViewController.swift */,
+				D06C11982B10FA7C00CDDA06 /* TabBarController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D043F0932B1FA62800D73DD6 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D06C11942B10B79800CDDA06 /* LocationManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		D043F0942B1FA65700D73DD6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D043F0952B1FA66D00D73DD6 /* ViewCells */,
+				D043F08D2B1E0E9700D73DD6 /* CustomTitleView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D043F0952B1FA66D00D73DD6 /* ViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				D043F08F2B1F822B00D73DD6 /* WeatherDetailTableViewCell.swift */,
+				D0D6907A2B1A04DD0013D950 /* FavoritesCollectionViewCell.swift */,
+			);
+			path = ViewCells;
+			sourceTree = "<group>";
+		};
 		D05ED55E2B0FC7F900ED3A52 = {
 			isa = PBXGroup;
 			children = (
@@ -140,16 +186,10 @@
 			isa = PBXGroup;
 			children = (
 				D06C11972B10DCF600CDDA06 /* Application */,
-				D05ED56E2B0FC7F900ED3A52 /* MapViewController.swift */,
-				D06C11902B0FE1A300CDDA06 /* SearchViewController.swift */,
-				D043F0892B1D181F00D73DD6 /* WeatherService.swift */,
-				D043F08B2B1D2C0900D73DD6 /* WeatherDetailViewController.swift */,
-				D043F08F2B1F822B00D73DD6 /* WeatherDetailTableViewCell.swift */,
-				D043F08D2B1E0E9700D73DD6 /* CustomTitleView.swift */,
-				D06C11922B0FE1BF00CDDA06 /* FavoritesViewController.swift */,
-				D0D6907A2B1A04DD0013D950 /* FavoritesCollectionViewCell.swift */,
-				D06C11982B10FA7C00CDDA06 /* TabBarController.swift */,
-				D06C11942B10B79800CDDA06 /* LocationManager.swift */,
+				D043F0922B1FA60E00D73DD6 /* ViewControllers */,
+				D043F0912B1FA5D700D73DD6 /* Services */,
+				D043F0942B1FA65700D73DD6 /* Views */,
+				D043F0932B1FA62800D73DD6 /* Managers */,
 				D06C11962B10B91D00CDDA06 /* Support Files */,
 				D05ED5732B0FC7F900ED3A52 /* WeatherForecast.xcdatamodeld */,
 			);
