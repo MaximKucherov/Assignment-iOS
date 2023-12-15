@@ -8,27 +8,12 @@
 import UIKit
 import MapKit
 
-struct WeatherInfo {
-    let cityName: String?
-    let country: String?
-    let temperature: Double?
-    let weatherDescription: String?
-    let feelsLike: Double?
-    
-    init(cityName: String?, country: String?, temperature: Double?, weatherDescription: String?, feelsLike: Double?) {
-        self.cityName = cityName
-        self.country = country
-        self.temperature = temperature
-        self.weatherDescription = weatherDescription
-        self.feelsLike = feelsLike
-    }
-}
-
 class SearchViewController: UIViewController, UISearchBarDelegate {
     
+    weak var delegate: TabBarBadgeDelegate?
+    
+    private let viewModel = SearchViewModel()
     private let searchController = UISearchController(searchResultsController: nil)
-    private var searchResults: [WeatherInfo] = [] // Сюда будут сохранены результаты поиска
-    private let weatherService = WeatherService(apiKey: "Put_Your_API_KEY")
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -37,16 +22,23 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         return tableView
     }()
     
+    // Let's add an initializer to pass the delegate
+    init(delegate: TabBarBadgeDelegate?) {
+        self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(tableView)
-        
         tableView.delegate = self
         tableView.dataSource = self
-        
         configureSearchController()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,6 +46,14 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         tableView.frame = view.bounds
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.updateTabBarBadge(count: StorageManager.shared.fetchData().count)
+    }
+}
+
+    //MARK: - Setup SearchViewController
+extension SearchViewController {
     private func configureSearchController() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -71,13 +71,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate {
         
         searchController.isActive = true
     }
-    
 }
 
+    // MARK: - TableView
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchResults.count
+        viewModel.searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,10 +85,12 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.backgroundColor = .clear
         cell.textLabel?.textColor = .white
-        let weatherInfo = searchResults[indexPath.row]
-        cell.textLabel?.text = "\(weatherInfo.cityName ?? ""), \(weatherInfo.country ?? "")"
+
+        let weatherInfo = viewModel.searchResults[indexPath.row]
         
-        // Добавляем кастомное изображение с белой стрелкой
+        cell.textLabel?.text = "\(weatherInfo.name ?? ""), \(weatherInfo.state ?? ""), \(weatherInfo.country ?? "")"
+        
+        // Adding a custom image with a white arrow
         let disclosureImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
         disclosureImageView.tintColor = .white
         cell.accessoryView = disclosureImageView
@@ -96,68 +98,32 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedWeatherInfo = searchResults[indexPath.row]
+        let selectedWeatherInfo = viewModel.searchResults[indexPath.row]
         
-        let weatherDetailVC = WeatherDetailViewController()
-        weatherDetailVC.weatherInfo = selectedWeatherInfo
+        let detailVC = DetailViewController()
+        detailVC.cityLocation = selectedWeatherInfo
         
-        // Установите hidesBottomBarWhenPushed в true перед выполнением навигации
-        weatherDetailVC.hidesBottomBarWhenPushed = true
-        
-        navigationController?.pushViewController(weatherDetailVC, animated: true)
+        navigationController?.pushViewController(detailVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
 }
 
+    // MARK: - UpdateSearchResults
 extension SearchViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchTerm = searchController.searchBar.text else { return }
 
-        weatherService.getWeather(for: searchTerm) { result in
+        viewModel.fetchLocationData(for: searchTerm) { result in
             switch result {
-            case .success(let weatherData):
-                // Обработайте данные о погоде
-                if let cityName = weatherData.name,
-                   let country = weatherData.sys?.country,
-                   let temperature = weatherData.main?.temp,
-                   let feelsLike = weatherData.main?.feelsLike,
-                   let weatherDescr = weatherData.weather?.first?.description {
-                    print(weatherDescr)
-                    let weatherInfo = WeatherInfo(cityName: cityName,
-                                                  country: country,
-                                                  temperature: temperature,
-                                                  weatherDescription: weatherDescr,
-                                                  feelsLike: feelsLike
-                    )
-
-                    // Очищаем массив результатов поиска
-                    self.searchResults.removeAll()
-
-                    // Добавляем новый результат в массив
-                    self.searchResults.append(weatherInfo)
-
-                    // Обновите отображение таблицы
+            case .success:
+                DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-
+                
             case .failure(let error):
-                print("Error fetching weather data: \(error)")
+                print("Error: \(error)")
             }
         }
     }
-
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // Вызывается при нажатии на кнопку "Search" на клавиатуре
-        // Вы можете добавить дополнительную логику здесь, если необходимо
-        searchBar.becomeFirstResponder()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        // Скрыть клавиатуру при нажатии на "Cancel"
-        searchBar.resignFirstResponder()
-    }
-    
 }
