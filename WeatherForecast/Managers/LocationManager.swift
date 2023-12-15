@@ -9,14 +9,15 @@ import Foundation
 import CoreLocation
 
 class LocationManager: NSObject {
+    
     private var locationManager = CLLocationManager()
 
+    var currentLocation: CLLocationCoordinate2D? {
+        locationManager.location?.coordinate
+    }
+    
     override init() {
         super.init()
-        setupLocationManager()
-    }
-
-    private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.requestWhenInUseAuthorization()
@@ -24,23 +25,21 @@ class LocationManager: NSObject {
     }
 }
 
-// MARK: - CLLocationManagerDelegate
+    // MARK: - CLLocationManagerDelegate
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // Обработка обновлений местоположения
         if let location = locations.first {
             print("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
         }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        // Обработка ошибок геолокации
         print("Location manager failed with error: \(error.localizedDescription)")
     }
 
+    // MARK: - Location permission
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        // Обработка изменений статуса разрешения
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             print("Location permission granted")

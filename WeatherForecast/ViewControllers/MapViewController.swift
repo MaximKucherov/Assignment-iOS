@@ -5,48 +5,69 @@
 //  Created by Maxim Kucherov on 23/11/2023.
 //
 
-import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController{
     
-    var mapView: MKMapView!
-    var segmentedControl: UISegmentedControl!
+    weak var delegate: TabBarBadgeDelegate?
+    
+    private var mapView: MKMapView!
+    private var segmentedControl: UISegmentedControl!
+    
+    private let viewModel = MapViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Создаем экземпляр MKMAPView
+        setupMapView()
+        setupNavigationMapPanel()
+        setupLongPressGesture()
+        delegate?.updateTabBarBadge(count: StorageManager.shared.fetchData().count)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.updateTabBarBadge(count: StorageManager.shared.fetchData().count)
+    }
+}
+
+    // MARK: - Setup MapView
+extension MapViewController {
+    
+    private func setupMapView() {
         mapView = MKMapView()
-        
-        // Установите фрейм (размер и положение) карты
         mapView.frame = view.bounds
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        // Добавьте карту в иерархию представлений
+        mapView.delegate = self
+        // Display the user's current location
+        mapView.showsUserLocation = true
+        mapView.userTrackingMode = .follow
         view.addSubview(mapView)
+    }
+    
+    private func setupNavigationMapPanel() {
         
-        // Создаем UISegmentedControl с двумя сегментами
-        segmentedControl = UISegmentedControl(items: ["Standard", "Satellite"])
-        segmentedControl.selectedSegmentIndex = 0 // Выбираем стандартный вид при загрузке
+        // Creating a UISegmentedControl with two segments
+        segmentedControl = UISegmentedControl(items: [NSLocalizedString("Standard", comment: ""), NSLocalizedString("Satellite", comment: "")])
+        segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
         segmentedControl.tintColor = .gray
         segmentedControl.selectedSegmentTintColor = .gray
         segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
         
-        // Создаем UIButton с изображением местоположения
+        // Creating a UIButton with a location image
         let locationButton = UIButton(type: .system)
         locationButton.setImage(UIImage(systemName: "location"), for: .normal)
         locationButton.tintColor = .purple
         locationButton.addTarget(self, action: #selector(locationButtonPressed), for: .touchUpInside)
 
-        // Создаем UIStackView для размещения UISegmentedControl и UIImageView
+        // Creating a UIStackView to host UISegmentedControl and UIImageView
         let stackView = UIStackView(arrangedSubviews: [segmentedControl, locationButton])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = 100
 
-        // Создаем дополнительный UIView с черным фоном
+        // Creating an additional UIView with a black background
         let backgroundView = UIView()
         backgroundView.backgroundColor = .black
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,7 +79,7 @@ class MapViewController: UIViewController {
             backgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
 
-        // Устанавливаем UIStackView в дополнительный UIView
+        // Installing UIStackView in an additional UIView
         stackView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.addSubview(stackView)
         NSLayoutConstraint.activate([
@@ -68,7 +89,7 @@ class MapViewController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -8)
         ])
     
-        // Добавляем разделительную линию
+        // Adding a dividing line
         let separatorLine = UIView()
         separatorLine.backgroundColor = .gray
         separatorLine.translatesAutoresizingMaskIntoConstraints = false
@@ -79,34 +100,83 @@ class MapViewController: UIViewController {
             separatorLine.topAnchor.constraint(equalTo: backgroundView.bottomAnchor),
             separatorLine.heightAnchor.constraint(equalToConstant: 1)
         ])
-        
-        // Отобразите текущее местоположение пользователя
-        mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
-        
-        let _ = LocationManager()
     }
     
-    @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-        // Обработка изменений значения UISegmentedControl
+    private func setupLongPressGesture() {
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        mapView.addGestureRecognizer(longPressGesture)
+    }
+    
+    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard gestureRecognizer.state == .ended else { return }
+        
+        let location = gestureRecognizer.location(in: mapView)
+        let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+        reverseGeocodeAndAddMarker(coordinate: coordinate)
+    }
+    
+    private func reverseGeocodeAndAddMarker(coordinate: CLLocationCoordinate2D) {
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            guard let placemark = placemarks?.first, error == nil else {
+                // Handle reverse geocoding errors
+                return
+            }
+            
+            let locationName = placemark.name ?? placemark.locality ?? placemark.subLocality ?? ""
+            self.addMarker(coordinate: coordinate, title: locationName)
+        }
+    }
+    
+    private func addMarker(coordinate: CLLocationCoordinate2D, title: String) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = title
+        mapView.addAnnotation(annotation)
+    }
+    
+    @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
-        case 0:
-            // Переключение на стандартный вид карты
-            mapView.mapType = .standard
-        case 1:
-            // Переключение на спутниковый вид карты
-            mapView.mapType = .satellite
-        default:
-            break
+            case 0: mapView.mapType = .standard
+            case 1: mapView.mapType = .satellite
+            default: break
         }
     }
     
-    @objc func locationButtonPressed() {
-        guard let userLocation = mapView.userLocation.location else {
-            return
+    @objc private func locationButtonPressed() {
+        if let userLocation = viewModel.getCurrentUserLocation() {
+            mapView.setCenter(userLocation, animated: true)
         }
-        
-        mapView.setCenter(userLocation.coordinate, animated: true)
     }
 }
 
+    // MARK: - MapViewDelegate
+extension MapViewController: MKMapViewDelegate {
+    // Implement MKMapViewDelegate methods if needed
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let coordinate = view.annotation?.coordinate else { return }
+        let detailViewController = DetailViewController()
+        
+        viewModel.updateDetailWeather(latitude: coordinate.latitude, longitude: coordinate.longitude) { result in
+            switch result {
+            case .success(let weatherData):
+                guard let city = weatherData.name,
+                        let latitude = weatherData.coord?.lat,
+                        let longitude = weatherData.coord?.lon,
+                        let state = Optional(""),
+                        let country = weatherData.sys?.country
+                else { return }
+                    let cityLocation = FilterService(name: city, lat: latitude, lon: longitude, country: country, state: state)
+                    detailViewController.cityLocation = cityLocation
+            case .failure(let failure):
+                print("Error: \(failure)")
+            }
+        }
+        
+//        detailViewController.updateLocationData(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
