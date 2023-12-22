@@ -55,7 +55,7 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
         configureBackButton()
 }
     
-    //MARK: - Overrive Methods (Setup TabBar)
+    // MARK: - Overrive Methods (Setup TabBar)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -285,7 +285,7 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         cell.temperatureLabel.text = "\(randomTemp)°C"
         
         cell.backgroundColor = .clear
-        
+
         return cell
     }
 }

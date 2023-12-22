@@ -60,7 +60,7 @@ class FavoritesViewController: UIViewController {
 
     // MARK: - CollectionViewDataSource, ollectionViewDelegateFlowLayout
 extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.reversedCells.count
     }
@@ -117,8 +117,13 @@ extension FavoritesViewController: UICollectionViewDelegate {
         let detailViewController = DetailViewController()
         
         // Set the data to be displayed in the DetailViewController
-        detailViewController.cityLocation = FilterService(name: selectedCellData.name, lat: selectedCellData.lat, lon: selectedCellData.lon, country: selectedCellData.country, state: selectedCellData.state)
-        
+        detailViewController.cityLocation = FilterService(name: selectedCellData.name, 
+                                                          lat: selectedCellData.lat,
+                                                          lon: selectedCellData.lon,
+                                                          country: selectedCellData.country,
+                                                          state: selectedCellData.state
+        )
+
         navigationController?.pushViewController(detailViewController, animated: true)
     }
         
