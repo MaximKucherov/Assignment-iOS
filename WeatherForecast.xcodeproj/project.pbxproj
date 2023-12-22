@@ -352,6 +352,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
+				ORGANIZATIONNAME = "Maxim Kucherov";
 				TargetAttributes = {
 					D05ED5662B0FC7F900ED3A52 = {
 						CreatedOnToolsVersion = 15.0.1;
