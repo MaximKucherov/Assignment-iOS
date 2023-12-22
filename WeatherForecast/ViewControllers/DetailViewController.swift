@@ -29,7 +29,7 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
     private let addOrDelFavoriteButton = UIButton()
     private let storageManager = StorageManager.shared
     private let viewModel = DetailViewModel()
-    
+
 //    let daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
     private let tableView: UITableView = {
