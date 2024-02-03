@@ -1,6 +1,6 @@
 //
-//  WeatherForecastUITests.swift
-//  WeatherForecastUITests
+//  WeatherOnMapSearchUIKit.swift
+//  WeatherOnMapSearchUIKit
 //
 //  Created by Maxim Kucherov on 23/11/2023.
 //

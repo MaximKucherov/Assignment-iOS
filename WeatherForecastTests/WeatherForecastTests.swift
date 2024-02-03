@@ -1,12 +1,12 @@
 //
-//  WeatherForecastTests.swift
-//  WeatherForecastTests
+//  WeatherOnMapSearchUIKit.swift
+//  WeatherOnMapSearchUIKit
 //
 //  Created by Maxim Kucherov on 23/11/2023.
 //
 
 import XCTest
-@testable import WeatherForecast
+@testable import WeatherOnMapSearchUIKit
 
 final class WeatherForecastTests: XCTestCase {
 
